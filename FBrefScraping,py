@@ -1,0 +1,58 @@
+#   AS IT'S DIFFICULT TO SCRAPE NORMALLY HENCE WE SCRAPE DATA USING COLAB
+
+import os
+import pandas as pd
+from tabulate import tabulate
+from IPython.display import Markdown, display
+
+def generate_scouting_report(player_name, url):
+    # Load data from the provided URL
+    df = pd.read_html(url)[0]
+
+    # Convert DataFrame to Markdown
+    markdown_table = tabulate(df, headers='keys', tablefmt='pipe')
+
+    # Display Markdown content
+    display(Markdown(markdown_table))
+
+    # Save Markdown content to a file
+    file_path = 'table.md'
+    with open(file_path, 'w') as f:
+        f.write(markdown_table)
+
+    # Commit and push the file to GitHub repository
+    commit_message = f"Stats report for {player_name}"
+    os.system(f"git add {file_path}")
+    os.system(f'git config --global user.email "yashsonone567@gmail.com"')  # Replace with your email
+    os.system(f'git config --global user.name "Yash Sonone"')  # Replace with your name
+    os.system(f"git commit -m '{commit_message}'")
+    os.system("git push origin main")
+
+
+
+# Clone the repository and set up GitHub authentication
+github_url = "https://github.com/yashps7/Scouting_Using_OpenAI_Api.git"
+# Replace 'your_github_token' with your actual GitHub personal access token
+github_token = input("Enter your GitHub personal access token: ")
+
+# Set the authenticated GitHub URL
+authenticated_github_url = github_url.replace("https://", f"https://{github_token}@")
+
+# Clone the repository
+os.system(f"git clone {authenticated_github_url}")
+
+# Move to the cloned repository directory
+os.chdir("Scouting_Using_OpenAI_Api")
+
+# Check if table.md exists and delete it if it does
+if os.path.exists("table.md"):
+    os.remove("table.md")
+    print("Existing table.md file deleted.")
+else:
+    print("No existing table.md file found.")
+
+# Example usage:
+player_name = input("Enter player's name: ")
+url = input("Enter FBRef URL: ")
+
+generate_scouting_report(player_name, url)
