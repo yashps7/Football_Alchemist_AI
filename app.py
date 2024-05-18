@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 from openai import OpenAI
 
+st.set_page_config(layout="wide")
+
 st.markdown('<h1 style="color: #F3FF02; font-family:Arial; font-size: 60px; text-align: center;">Football and AI Scouting</h1>', unsafe_allow_html=True)
 st.caption("For player statistics, we initially used the FBref website to scrape all essential data such as name, age, etc. However, recently scraping data has become challenging, so we moved to Fotmob. Despite this, we still need to scrape statistics from the [FBref website](https://fbref.com/en/). Therefore before proceeding, we need to run [colab file](https://colab.research.google.com/drive/1nx0BSmhoenc8joP-EsYNtQQzx2_F9jwa) first to get the statistics data, which will automatically be stored in GitHub as long as the GitHub token is valid (currently for 30 days as of 18/05/2024")
 st.sidebar.title("Enter Fotmob Player Profile URL to proceed and Draw Insights 🎨")
