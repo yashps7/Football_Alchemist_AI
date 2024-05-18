@@ -234,7 +234,7 @@ def main():
         age = player_info.get('Age', 'N/A')
         team = player_info.get('Team', 'N/A')
         league = player_info.get('League', 'N/A')
-        githubLink = "https://raw.githubusercontent.com/yashps7/Scouting_Using_OpenAI_Api/main/table.md"
+        githubLink = "https://raw.githubusercontent.com/yashps7/Scouting_Using_OpenAI_api/main/table.md"
         scouting_report = get_scouting_report(player_info.get('Player_Name', 'N/A'), position, age, team, league, githubLink)
         #st.markdown(scouting_report)
         #radar_chart_from_url(url, player_info.get('Player_Name', 'N/A'))
