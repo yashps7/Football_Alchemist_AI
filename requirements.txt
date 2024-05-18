@@ -6,3 +6,4 @@ openai
 numpy
 seaborn
 matplotlib
+lxml
