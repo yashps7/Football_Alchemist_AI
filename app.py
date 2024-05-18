@@ -13,15 +13,12 @@ st.set_page_config(layout="wide")
 # Read config.toml file
 config = toml.load("config.toml")
 
-# Apply settings from config.toml
-st.set_option('server.enableCORS', config.get('server', {}).get('enableCORS', True))
-st.set_option('theme.base', config.get('theme', {}).get('base', 'light'))
-st.set_option('theme.primaryColor', config.get('theme', {}).get('primaryColor', '#f3f907'))
-st.set_option('theme.backgroundColor', config.get('theme', {}).get('backgroundColor', '#0e0e35'))
-st.set_option('theme.secondaryBackgroundColor', config.get('theme', {}).get('secondaryBackgroundColor', '#6d024b'))
-st.set_option('theme.textColor', config.get('theme', {}).get('textColor', '#ffffff'))
-st.set_option('theme.font', config.get('theme', {}).get('font', 'sans-serif'))
-
+# Apply theme from config.toml
+st.set_page_config(
+    page_title="My Streamlit App",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 st.markdown('<h1 style="color: #F3FF02; font-family:Arial; font-size: 60px; text-align: center;">Football and AI Scouting</h1>', unsafe_allow_html=True)
 st.caption("For player statistics, we initially used the FBref website to scrape all essential data such as name, age, etc. However, recently scraping data has become challenging, so we moved to Fotmob. Despite this, we still need to scrape statistics from the [FBref website](https://fbref.com/en/). Therefore before proceeding, we need to run [colab file](https://colab.research.google.com/drive/1nx0BSmhoenc8joP-EsYNtQQzx2_F9jwa) first to get the statistics data, which will automatically be stored in GitHub as long as the GitHub token is valid (currently for 30 days as of 18/05/2024")
