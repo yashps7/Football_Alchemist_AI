@@ -18,3 +18,18 @@ It will scrape data from Fotmob and FBref. Initially FBref data was enough but n
     His Trait Radar
     
     ![Trait Image](https://github.com/yashps7/Football_Alchemist_AI/blob/main/output/lyTraits.png)
+
+2. Phil Foden
+
+   Man city's wonderkid who's now became a man in absence of his fellow star teammate Kevin De Bruyne.
+
+   ![Phil](https://github.com/yashps7/Football_Alchemist_AI/blob/main/output/foden.png)
+
+3. Alexia Putellas
+
+   Two time Ballon D'or winner showing off her talent time and time again.
+
+   ![Alexia](https://github.com/yashps7/Football_Alchemist_AI/blob/main/output/alexia.png)
+
+## Future Scope
+Just few factors and we can see how data can influence scouting. Ofc there is scope. We can incorporate data like player contract, market value, team shortcomings and other values to gain even more insights and conclusions.
