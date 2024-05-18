@@ -7,11 +7,11 @@ It will scrape data from Fotmob and FBref. Initially FBref data was enough but n
  As we can see we get Detailed Scouting report of player, Statistics and also Player Trait Radar.
  Using this data we can have basic overview of player and take steps upon informed decision.
 
- ###Some Demo Outputs
+ ### Some Demo Outputs
 
  1. Lamine Yamal
     16 year old crazy talent and hope for the Barca future.
-    [Output Image](https://github.com/yashps7/Football_Alchemist_AI/blob/main/output/lamine.png)
+    ![Output Image](https://github.com/yashps7/Football_Alchemist_AI/blob/main/output/lamine.png)
 
     His Trait Radar
-    [Trait Image](https://github.com/yashps7/Football_Alchemist_AI/blob/main/output/lyTraits.png)
+    ![Trait Image](https://github.com/yashps7/Football_Alchemist_AI/blob/main/output/lyTraits.png)
