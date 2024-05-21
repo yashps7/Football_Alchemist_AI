@@ -1,23 +1,23 @@
 |    | Statistic                | Per 90   |   Percentile |
 |---:|:-------------------------|:---------|-------------:|
-|  0 | Non-Penalty Goals        | 0.44     |           99 |
-|  1 | npxG: Non-Penalty xG     | 0.37     |           99 |
-|  2 | Shots Total              | 2.80     |           95 |
-|  3 | Assists                  | 0.55     |           99 |
-|  4 | xAG: Exp. Assisted Goals | 0.40     |           99 |
-|  5 | npxG + xAG               | 0.77     |           99 |
-|  6 | Shot-Creating Actions    | 6.08     |           98 |
+|  0 | Non-Penalty Goals        | 0.40     |           90 |
+|  1 | npxG: Non-Penalty xG     | 0.31     |           80 |
+|  2 | Shots Total              | 2.60     |           72 |
+|  3 | Assists                  | 0.43     |           98 |
+|  4 | xAG: Exp. Assisted Goals | 0.31     |           88 |
+|  5 | npxG + xAG               | 0.62     |           93 |
+|  6 | Shot-Creating Actions    | 6.53     |           98 |
 |  7 | nan                      | nan      |          nan |
-|  8 | Passes Attempted         | 63.70    |           95 |
-|  9 | Pass Completion %        | 85.3%    |           95 |
-| 10 | Progressive Passes       | 9.39     |           96 |
-| 11 | Progressive Carries      | 3.11     |           99 |
-| 12 | Successful Take-Ons      | 1.84     |           98 |
-| 13 | Touches (Att Pen)        | 7.24     |           99 |
-| 14 | Progressive Passes Rec   | 9.46     |           99 |
+|  8 | Passes Attempted         | 69.03    |           99 |
+|  9 | Pass Completion %        | 82.2%    |           89 |
+| 10 | Progressive Passes       | 8.47     |           99 |
+| 11 | Progressive Carries      | 5.51     |           91 |
+| 12 | Successful Take-Ons      | 2.82     |           86 |
+| 13 | Touches (Att Pen)        | 6.48     |           90 |
+| 14 | Progressive Passes Rec   | 10.75    |           84 |
 | 15 | nan                      | nan      |          nan |
-| 16 | Tackles                  | 1.43     |           14 |
-| 17 | Interceptions            | 0.27     |            1 |
-| 18 | Blocks                   | 0.96     |           15 |
-| 19 | Clearances               | 0.24     |            2 |
-| 20 | Aerials Won              | 0.20     |           10 |
+| 16 | Tackles                  | 0.91     |           18 |
+| 17 | Interceptions            | 0.40     |           41 |
+| 18 | Blocks                   | 1.28     |           78 |
+| 19 | Clearances               | 0.11     |            2 |
+| 20 | Aerials Won              | 0.31     |           31 |
