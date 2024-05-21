@@ -32,4 +32,4 @@ It will scrape data from Fotmob and FBref. Initially FBref data was enough but n
    ![Alexia](https://github.com/yashps7/Football_Alchemist_AI/blob/main/output/alexia.png)
 
 ## Future Scope
-Just few factors and we can see how data can influence scouting. Ofc there is scope. We can incorporate data like player contract, market value, team shortcomings and other values to gain even more insights and conclusions.
+Just few factors and we can see how data can influence scouting. Ofc there is scope. We can incorporate data like player contract, market value, team shortcomings and other values to gain even more insights and conclusions. Incorporating is underway. For contributions you can contact me.
