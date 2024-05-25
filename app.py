@@ -69,7 +69,18 @@ def extract_player_bio(soup):
 
 def printStats(table):
     data_table = table
-    st.dataframe(data_table, width=1080, height=1300)
+    data = data_table.rename(columns={
+        'title': 'Title',
+        'localizedTitleId': 'Descriptive Title',
+        'statValue': 'Value',
+        'per90': 'Per 90',
+        'percentileRank': 'Percentile Rank',
+        'percentileRankPer90': 'Percentile Rank per 90',
+        'statFormat': 'Stat Format',
+        'section_title': 'Category'
+    })
+    data = data.drop(['Descriptive Title', 'Stat Format'], axis=1)
+    st.dataframe(data, width=1080, height=1300)
 
 def get_scouting_report(player_name, position, age, team, league, value, table):
     # Fetching content from markdown file hosted on GitHub
