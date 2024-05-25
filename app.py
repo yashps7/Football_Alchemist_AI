@@ -67,7 +67,7 @@ def extract_player_bio(soup):
     
     return player_info
 
-def printStats(url):
+def printStats(table):
     data_table = table
     st.dataframe(data_table, width=1080, height=1300)
 
