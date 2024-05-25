@@ -9,6 +9,8 @@ It will scrape data from Fotmob and FBref. Initially FBref data was enough but n
 
  ### Some Demo Outputs
 
+ ##### Recently I've added few more features, below images are old one but still 70-80% similar.
+ 
  1. Lamine Yamal
     
     16 year old crazy talent and hope for the Barca future.
