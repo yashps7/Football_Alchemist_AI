@@ -13,7 +13,7 @@ st.set_page_config(layout="wide")
 st.markdown('<h1 style="color: #F3FF02; font-family:Arial; font-size: 60px; text-align: center;">Football Alchemist AI</h1>', unsafe_allow_html=True)
 st.markdown('<h3 style="color: #FF02FC; font-family:Arial; font-size: 20px; text-align: center;">Transforming raw football data into golden scouting reports through AI alchemy. </h3>', unsafe_allow_html=True)
 
-st.caption("For player statistics, we initially used the FBref website to scrape all essential data such as name, age, etc. However, recently scraping data has become challenging, so we moved to Fotmob. Despite this, we still need to scrape statistics from the [FBref website](https://fbref.com/en/). Therefore before proceeding, we need to run [colab file](https://colab.research.google.com/drive/1nx0BSmhoenc8joP-EsYNtQQzx2_F9jwa) first to get the statistics data, which will automatically be stored in GitHub as long as the GitHub token is valid (currently for 30 days as of 18/05/2024")
+st.caption("For player statistics, we scrape data from [Fotmob](https://www.fotmob.com/) website where we can get all basic info about player and also useful statistics as well. In case fotmob decides to make changes then me also need to change few parameter other than that all is well. In backgroud we are feeding scraped data into our prompt using few shot prompting and hence by using openai api we get our useful scouting report.")
 st.sidebar.title("Enter Fotmob Player Profile URL to proceed and Draw Insights 🎨")
 st.sidebar.caption("Go to [Fotmob](https://www.fotmob.com/) to search player ")
 fotmob = st.sidebar.text_input("Enter the Fotmob player URL:")
