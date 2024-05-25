@@ -6,6 +6,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 from openai import OpenAI
+from urllib.parse import urlparse
 
 st.set_page_config(layout="wide")
 
@@ -60,18 +61,20 @@ def extract_player_bio(soup):
     if league_section:
         player_info['League'] = league_section.get_text(strip=True)[:-9]     # -9 for removing league error
     
+    # Extracting player's market value
+    market_value = soup.find('div', class_='css-to3w1c-StatValueCSS', string=lambda string: string and '€' in string).text
+    player_info['Market_Value'] = market_value
+    
     return player_info
 
 def printStats(url):
-    markdown_url = url
-    markdown_content = requests.get(markdown_url).text
-    stats = st.markdown(markdown_content, unsafe_allow_html=True)
-    return stats
+    data_table = table
+    st.dataframe(data_table, width=1080, height=1300)
 
-def get_scouting_report(player_name, position, age, team, league, url):
+def get_scouting_report(player_name, position, age, team, league, value, table):
     # Fetching content from markdown file hosted on GitHub
-    markdown_url = url
-    markdown_content = requests.get(markdown_url).text
+    #markdown_url = url
+    #markdown_content = requests.get(markdown_url).text
     #st.markdown(markdown_content, unsafe_allow_html=True)
     
     prompt = f"""
@@ -84,24 +87,34 @@ def get_scouting_report(player_name, position, age, team, league, url):
     Age: {age}
     Team: {team}
     League: {league}
-
-    {markdown_content}
+    Market Value: {value}
+    
+    {table}
 
     Return the scouting report in the following markdown format:
 
     # Scouting Report for {player_name}
 
+    ## Player Overview
+    < a general overview of a player >
+    
+    ## Key Performance Indicators
+    < a list of 1 to 3 key performance indicators for that particular position in which player is playing >
+    
     ## Strengths
-    < a list of 1 to 3 strengths >
+    < a list of 1 to 5 strengths in few sentences each >
 
     ## Weaknesses
-    < a list of 1 to 3 weaknesses >
+    < a list of 1 to 5 weaknesses in few sentences each >
 
+    ## Area of Improvement
+    < a list of 1 to 3 areas for improvement and potential strategies for development >
+    
     ## Summary
-    < a brief summary of the player's overall performance and if he would be beneficial to the team >
+    < a detailed summary of the player's overall performance and if he would be beneficial to the team with also market value aspect >
     """
     response = api_key.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "You are a professional football (soccer) scout."},
             {"role": "user", "content": prompt},
@@ -185,7 +198,34 @@ def radar_chart_from_url(url, name, league):
     # Show the plot
     st.pyplot(fig)
 
-# Streamlit app
+def getPlayerData(soup, url):
+    params = {}
+    parsed_url = urlparse(url)
+    params['playerId'] = parsed_url.path.split('/')[-2]
+    
+    league_year = soup.find('h2', class_='css-1eyg8b0-HeaderText').text
+    season = league_year.split()[-1]
+    
+    link = soup.find('a', class_='css-16l5vhw-Header-applyMediumHover')
+    uniqueNum = link.get('href').split('/')[-2]
+    
+    params['seasonId'] = season + '-' + uniqueNum
+    
+    response = requests.get('https://www.fotmob.com/api/playerStats', params=params)
+
+    data = response.json()
+    season = data['statsSection']['items']
+
+    stats = list(season)
+    flat_data = []
+    for section in stats:
+        for item in section['items']:
+            flat_data.append({**item, 'section_title': section['title']})
+    df = pd.DataFrame(flat_data)
+
+    return df
+
+# STREAMLIT APP
 def main():
     # User input for URL
     url = fotmob
@@ -236,8 +276,8 @@ def main():
         age = player_info.get('Age', 'N/A')
         team = player_info.get('Team', 'N/A')
         league = player_info.get('League', 'N/A')
-        githubLink = "https://raw.githubusercontent.com/yashps7/Football_Alchemist_AI/main/table.md"
-        scouting_report = get_scouting_report(player_info.get('Player_Name', 'N/A'), position, age, team, league, githubLink)
+        dataTable = getPlayerData(soup, fotmob)
+        scouting_report = get_scouting_report(player_info.get('Player_Name', 'N/A'), position, age, team, league, player_info.get('Market_Value', 'N/A'), dataTable)
         #st.markdown(scouting_report)
         #radar_chart_from_url(url, player_info.get('Player_Name', 'N/A'))
         
@@ -246,7 +286,7 @@ def main():
         with report:
             st.markdown(scouting_report)
         with stats:
-            printStats(githubLink)
+            printStats(dataTable)
         with radar:
             radar_chart_from_url(url, player_info.get('Player_Name', 'N/A'), league)
         
