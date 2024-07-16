@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 from openai import OpenAI
 from urllib.parse import urlparse
+from mplsoccer.pitch import VerticalPitch
+from matplotlib.path import Path
 
 st.set_page_config(layout="wide")
 
@@ -40,29 +42,29 @@ def extract_player_bio(soup):
     player_info = {}
 
     # Extracting player's age
-    bio_stats = soup.find_all('div', class_='css-1u6v53x-PlayerBioStatCSS e1478frm3')
+    bio_stats = soup.find_all('div', class_='css-1u6v53x-PlayerBioStatCSS e1pz3ljv2')
     for stat in bio_stats:
-        title = stat.find('div', class_='css-10h4hmz-StatTitleCSS e1478frm2').find('span').text.strip()
-        value = stat.find('div', class_='css-to3w1c-StatValueCSS e1478frm1').find('span').text.strip() if stat.find('span') else None
-        if "years" in value:
+        title = stat.find('div', class_='css-10h4hmz-StatTitleCSS e1pz3ljv3').find('span').text.strip()
+        value = stat.find('div', class_='css-to3w1c-StatValueCSS e1pz3ljv4').find('span').text.strip() if stat.find('span') else None
+        if value and "years" in value:
             player_info['Age'] = value
 
     # Extracting the player's team
-    team_section = soup.find('div', class_='css-3ephfi-TeamCSS e1wpoh897')
+    team_section = soup.find('div', class_='css-14k6s2u-TeamCSS e1tckksi2')
     if team_section:
         player_info['Team'] = team_section.get_text(strip=True)
 
     # Extracting primary position
-    primary_position = soup.find('div', class_='css-1g41csj-PositionsCSS e7shxg62')
+    primary_position = soup.find('div', class_='css-1g41csj-PositionsCSS e1x6pspg6')
     player_info['Primary Position'] = primary_position.text.strip() if primary_position else None
 
     # Extracting the player's league
-    league_section = soup.find('h2', class_='css-1eyg8b0-HeaderText e8flwhe3')
+    league_section = soup.find('h2', class_='css-1eyg8b0-HeaderText e1ahduwc3')
     if league_section:
         player_info['League'] = league_section.get_text(strip=True)[:-9]     # -9 for removing league error
     
     # Extracting player's market value
-    market_value = soup.find('div', class_='css-to3w1c-StatValueCSS', string=lambda string: string and '€' in string).text
+    market_value = soup.find('div', class_='css-to3w1c-StatValueCSS e1pz3ljv4', string=lambda string: string and '€' in string).text
     player_info['Market_Value'] = market_value
     
     return player_info
@@ -145,12 +147,12 @@ def radar_chart_from_url(url, name, league):
         soup = BeautifulSoup(response.text, 'html.parser')
 
         # Find the div containing the traits
-        traits_div = soup.find('div', class_='css-1l78068-PlayerTraitsContent e5ay90f4')
+        traits_div = soup.find('div', class_='css-1l78068-PlayerTraitsContent enw3yfw3')
 
         if traits_div:
             # Find all spans containing trait labels and percentages
-            trait_labels = traits_div.find_all('span', class_='css-1g16yy4-TraitText e5ay90f1')
-            trait_percentages = traits_div.find_all('span', class_='css-wkdacm-TraitPercentage e5ay90f0')
+            trait_labels = traits_div.find_all('span', class_='css-1g16yy4-TraitText enw3yfw6')
+            trait_percentages = traits_div.find_all('span', class_='css-wkdacm-TraitPercentage enw3yfw7')
             
             # Iterate over each pair of label and percentage
             for label, percentage in zip(trait_labels, trait_percentages):
@@ -214,14 +216,15 @@ def getPlayerData(soup, url):
     parsed_url = urlparse(url)
     params['playerId'] = parsed_url.path.split('/')[-2]
     
-    league_year = soup.find('h2', class_='css-1eyg8b0-HeaderText').text
-    season = league_year.split()[-1]
+    #league_year = soup.find('h2', class_='css-1eyg8b0-HeaderText').text
+    #season = league_year.split()[-1]
     
-    link = soup.find('a', class_='css-16l5vhw-Header-applyMediumHover')
-    uniqueNum = link.get('href').split('/')[-2]
-    
-    params['seasonId'] = season + '-' + uniqueNum
-    
+    #link = soup.find('a', class_='css-16l5vhw-Header-applyMediumHover')
+    #uniqueNum = link.get('href').split('/')[-2]
+
+    #params['seasonId'] = season + '-' + uniqueNum
+    params['seasonId'] = '1-0'
+
     response = requests.get('https://www.fotmob.com/api/playerStats', params=params)
 
     data = response.json()
@@ -235,6 +238,67 @@ def getPlayerData(soup, url):
     df = pd.DataFrame(flat_data)
 
     return df
+
+def getPlayerShot(soup, url):
+    params = {}
+    parsed_url = urlparse(url)
+    params['playerId'] = parsed_url.path.split('/')[-2]
+    
+    #league_year = soup.find('h2', class_='css-1eyg8b0-HeaderText').text
+    #season = league_year.split()[-1]
+    
+    #link = soup.find('a', class_='css-16l5vhw-Header-applyMediumHover')
+    #uniqueNum = link.get('href').split('/')[-2]
+    
+    params['seasonId'] = '1-0'
+    
+    response = requests.get('https://www.fotmob.com/api/playerStats', params=params)
+
+    data = response.json()
+    season = data['shotmap']
+    df = pd.DataFrame(season)
+    shotsData = df[['eventType', 'x', 'y', 'expectedGoals']]
+    
+    shots = shotsData
+    
+    # Create a figure and axis
+    fig, ax = plt.subplots(figsize=(16, 11))
+
+    # Create a VerticalPitch object
+    pitch = VerticalPitch(
+        pitch_type='uefa', half=True, goal_type='box',
+        pitch_color='grass', line_color='white'
+    )
+
+    # Draw the pitch
+    pitch.draw(ax=ax)
+
+    # Plot the shots
+    sc = pitch.scatter(
+        x=shots['x'], y=shots['y'],
+        s=shots['expectedGoals']*500, ax=ax,
+        c=shots['eventType'].map({'Goal': 'green', 'Miss': 'red', 'AttemptSaved': 'blue', 'Post': 'orange'}),
+        edgecolors='k', linewidths=0.5
+    )
+
+    # Add legend
+    legend_elements = [
+        plt.Line2D([0], [0], marker='o', color='w', label='Miss', markerfacecolor='red', markersize=10),
+        plt.Line2D([0], [0], marker='o', color='w', label='AttemptSaved', markerfacecolor='blue', markersize=10),
+        plt.Line2D([0], [0], marker='o', color='w', label='Post', markerfacecolor='orange', markersize=10),
+        plt.Line2D([0], [0], marker='o', color='w', label='Goal', markerfacecolor='green', markersize=10)
+    ]
+    ax.legend(handles=legend_elements, loc='upper right', fontsize='large')
+
+    # Add labels and title
+    ax.set_title('Shot Map')
+    ax.set_xlabel('x (cm)')
+    ax.set_ylabel('y (cm)')
+
+    # Adjust the aspect ratio
+    ax.set_aspect('equal')
+
+    st.pyplot(fig)
 
 # STREAMLIT APP
 def main():
@@ -250,17 +314,17 @@ def main():
         player_info = extract_player_bio(soup)
 
         # Extracting Player Name
-        name_section = soup.find('h1', class_='css-xgh3st-PlayerNameCSS e1wpoh898')
+        name_section = soup.find('h1', class_='css-xgh3st-PlayerNameCSS e1tckksi1')
         if name_section:
             player_info['Player_Name'] = name_section.get_text(strip=True)
-        
+
         st.sidebar.markdown("---")
         st.sidebar.markdown('<h1 style="color: #02FF9D;">Player Information</h1>', unsafe_allow_html=True)
         st.sidebar.write(f"**Name:** {player_info.get('Player_Name', 'N/A')}")
         st.sidebar.write(f"**Age:** {player_info.get('Age', 'N/A')}")
         st.sidebar.write(f"**Team:** {player_info.get('Team', 'N/A')}")
         st.sidebar.write(f"**Primary Position:** {player_info.get('Primary Position', 'N/A')}")
-        st.sidebar.write(f"**League:** {player_info.get('League', 'N/A')}")
+        #st.sidebar.write(f"**League:** {player_info.get('League', 'N/A')}")
         
         st.sidebar.markdown("---")    
     
@@ -293,14 +357,15 @@ def main():
         #radar_chart_from_url(url, player_info.get('Player_Name', 'N/A'))
         
         # provide options to either view report, stat's or trait radar
-        report, stats, radar = st.tabs(["Scouting Report", "Statistics", "Trait Radar"])
+        report, stats, radar, shot = st.tabs(["Scouting Report", "Statistics", "Trait Radar", "Shot Map"])
         with report:
             st.markdown(scouting_report)
         with stats:
             printStats(dataTable)
         with radar:
             radar_chart_from_url(url, player_info.get('Player_Name', 'N/A'), league)
-        
+        with shot:
+            getPlayerShot(soup, fotmob)
+
 if __name__ == "__main__":
     main()
-
