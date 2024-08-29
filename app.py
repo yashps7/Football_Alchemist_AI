@@ -50,7 +50,7 @@ def extract_player_bio(soup):
             player_info['Age'] = value
 
     # Extracting the player's team
-    team_section = soup.find('div', class_='css-14k6s2u-TeamCSS e1tckksi2')
+    team_section = soup.find('div', class_='css-14k6s2u-TeamCSS e3s3byw2')
     if team_section:
         player_info['Team'] = team_section.get_text(strip=True)
 
