@@ -314,7 +314,7 @@ def main():
         player_info = extract_player_bio(soup)
 
         # Extracting Player Name
-        name_section = soup.find('h1', class_='css-xgh3st-PlayerNameCSS e1tckksi1')
+        name_section = soup.find('h1', class_='css-zt63wq-PlayerNameCSS e3s3byw1')
         if name_section:
             player_info['Player_Name'] = name_section.get_text(strip=True)
 
